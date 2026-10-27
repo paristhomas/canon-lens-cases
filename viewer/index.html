@@ -1,0 +1,271 @@
+<title>Lens Case Models</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: workshop inspection bench - a control rail beside a large orbitable model stage. */
+:root {
+  --bg: #eef0f2;
+  --panel: #f8f9fa;
+  --fg: #1b2026;
+  --muted: #5d6670;
+  --line: #d3d8de;
+  --accent: #2f6fb0;
+  --accent-ink: #ffffff;
+  --stage: #e3e7eb;
+  --ok: #2e7d4f;
+  --font-ui: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14181d; --panel: #1b2027; --fg: #e4e8ec; --muted: #98a2ad; --line: #2c333c;
+    --accent: #6ea8e0; --accent-ink: #0d1218; --stage: #10141a; --ok: #6cc394; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14181d; --panel: #1b2027; --fg: #e4e8ec; --muted: #98a2ad; --line: #2c333c;
+  --accent: #6ea8e0; --accent-ink: #0d1218; --stage: #10141a; --ok: #6cc394; color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--font-ui); font-size: 14px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 16px; box-sizing: border-box;
+}
+.app { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 16px; height: 100%; min-height: 560px; }
+aside { display: flex; flex-direction: column; gap: 18px; overflow-y: auto; min-width: 0; padding-right: 2px; }
+h1 { font-size: 19px; font-weight: 600; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+.sub { color: var(--muted); margin: 4px 0 0; line-height: 1.45; }
+.group { display: flex; flex-direction: column; gap: 8px; }
+.label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 500; }
+.seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--panel); }
+.seg button { font: inherit; border: 0; background: transparent; color: var(--fg); padding: 8px 6px; cursor: pointer; border-left: 1px solid var(--line); line-height: 1.25; }
+.seg button:first-child { border-left: 0; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); font-weight: 500; }
+.seg button:focus-visible, .toggles input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.seg.poses { grid-auto-flow: row; grid-auto-columns: auto; }
+.seg.poses button { border-left: 0; border-top: 1px solid var(--line); text-align: left; padding: 8px 10px; }
+.seg.poses button:first-child { border-top: 0; }
+.toggles { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; }
+.toggles label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.toggles input { accent-color: var(--accent); width: 16px; height: 16px; margin: 0; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+dl { display: grid; grid-template-columns: auto 1fr; gap: 5px 12px; margin: 0; }
+dt { color: var(--muted); }
+dd { margin: 0; font-family: var(--font-data); font-variant-numeric: tabular-nums; text-align: right; }
+.pass { color: var(--ok); font-weight: 500; }
+.swatches { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--muted); }
+.swatches span { display: inline-flex; align-items: center; gap: 6px; }
+.swatches i { width: 11px; height: 11px; border-radius: 2px; display: inline-block; }
+.stage { position: relative; background: var(--stage); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; min-width: 0; min-height: 420px; }
+.stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.hint { position: absolute; left: 12px; bottom: 10px; font-size: 12px; color: var(--muted); pointer-events: none; }
+.status { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: 13px; pointer-events: none; }
+.note { font-size: 12px; color: var(--muted); line-height: 1.45; margin: 0; }
+@media (max-width: 760px) {
+  html, body { height: auto; }
+  .app { grid-template-columns: minmax(0, 1fr); height: auto; }
+  .stage { height: 62vh; order: -1; }
+  aside { overflow: visible; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+
+<div class="app">
+  <aside>
+    <div>
+      <h1>Lens Case Models</h1>
+      <p class="sub">FDM cases for Canon lenses in a backpack. Drag to orbit, scroll or pinch to zoom.</p>
+    </div>
+    <div class="group">
+      <span class="label" id="case-label">Case</span>
+      <div class="seg" role="group" aria-labelledby="case-label" id="case-seg"></div>
+    </div>
+    <div class="group">
+      <span class="label" id="style-label">Closure</span>
+      <div class="seg" role="group" aria-labelledby="style-label" id="style-seg"></div>
+    </div>
+    <div class="group" id="pose-group">
+      <span class="label" id="pose-label">Configuration</span>
+      <div class="seg poses" role="group" aria-labelledby="pose-label" id="pose-seg"></div>
+    </div>
+    <div class="group">
+      <span class="label">View</span>
+      <div class="toggles">
+        <label><input type="checkbox" id="t-section"> Section cut</label>
+        <label><input type="checkbox" id="t-explode"> Exploded</label>
+        <label><input type="checkbox" id="t-lens" checked> Lens</label>
+        <label><input type="checkbox" id="t-foam" checked> Foam</label>
+      </div>
+    </div>
+    <div class="card" id="info"></div>
+    <p class="note">The lens shapes are stand-in models filling each lens's spec size; no Canon CAD is published. Meshes are decimated for the web; print from the full STLs.</p>
+  </aside>
+  <div class="stage" id="stage">
+    <div class="status" id="status">Loading models…</div>
+    <div class="hint">Drag: orbit · Right-drag: pan · Scroll: zoom</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/STLLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/utils/BufferGeometryUtils.js"></script>
+<script>
+(() => {
+  const CASES = { case1: "1 · Telescoping", case2: "2 · 50", case3: "3 · 100-400", case4: "4 · 18-55", case5: "5 · 55-250", case6: "6 · 18-55 + adapter" };
+  const STYLES = { bayonet: "Bayonet", threaded: "Threaded", tpu: "TPU threaded", tpu_bayonet: "TPU bayonet" };
+  const PART_COLORS = { body: 0x3f6d9e, lid: 0xd9822b, inner: 0xd9822b, ring: 0x4f9a63 };
+  const PART_NAMES = { body: "Body", lid: "Lid", inner: "Top tube", ring: "Lock ring" };
+  const state = { case: "case1", style: "bayonet", pose: 0, section: false, explode: false, lens: true, foam: true };
+  let data = null;
+
+  const stage = document.getElementById("stage");
+  const statusEl = document.getElementById("status");
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.localClippingEnabled = true;
+  stage.prepend(renderer.domElement);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, 1, 1, 5000);
+  camera.up.set(0, 0, 1);
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x8a939c, 0.75));
+  const key = new THREE.DirectionalLight(0xffffff, 0.75); key.position.set(250, -300, 400); scene.add(key);
+  const rim = new THREE.DirectionalLight(0xffffff, 0.3); rim.position.set(-300, 200, 150); scene.add(rim);
+  const clip = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);   // keeps y < 0 ... flipped below
+  clip.normal.set(0, -1, 0);
+  const root = new THREE.Group(); scene.add(root);
+
+  function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function applyTheme() { scene.background = new THREE.Color(cssVar("--stage") || "#e3e7eb"); }
+  applyTheme();
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyTheme);
+  new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  const loader = new THREE.STLLoader();
+  const geoCache = new Map();
+  function geometry(url) {
+    if (!geoCache.has(url)) {
+      geoCache.set(url, fetch(url).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(j => {
+        const bin = atob(j.stl_b64), buf = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+        // smooth across facets of a curved surface, keep real edges (> 30 deg) sharp
+        return THREE.BufferGeometryUtils.toCreasedNormals(loader.parse(buf.buffer), Math.PI / 6);
+      }));
+    }
+    return geoCache.get(url);
+  }
+  function mat4(arr) { const m = new THREE.Matrix4(); m.set(...arr); return m; }
+
+  function material(color, opts = {}) {
+    return new THREE.MeshStandardMaterial(Object.assign({
+      color, metalness: 0.05, roughness: 0.62, side: THREE.DoubleSide,
+      clippingPlanes: state.section ? [clip] : [], clipShadows: true,
+    }, opts));
+  }
+
+  function variant() { return data.variants.find(v => v.case === state.case && v.style === state.style); }
+
+  let buildToken = 0;
+  async function build(refit) {
+    const v = variant();
+    const token = ++buildToken;
+    const pose = v.poses[Math.min(state.pose, v.poses.length - 1)];
+    statusEl.hidden = false; statusEl.textContent = "Loading models…";
+    const meshes = [];
+    for (const p of v.parts) {
+      const g = await geometry(p.stl);
+      let M = mat4(p.to_use);
+      if (pose.transforms[p.name]) M = mat4(pose.transforms[p.name]).multiply(M);
+      if (state.explode && v.explode[p.name]) M = mat4(v.explode[p.name]).multiply(M);
+      const mesh = new THREE.Mesh(g, material(PART_COLORS[p.name] ?? 0x888888));
+      mesh.matrixAutoUpdate = false; mesh.matrix.copy(M);
+      meshes.push(mesh);
+    }
+    for (const q of pose.visual) {
+      if (q.kind === "foam" && !state.foam) continue;
+      if (q.kind === "lens" && !state.lens) continue;
+      const g = await geometry(q.stl);
+      const m = q.kind === "foam"
+        ? material(0xf2d16b, { transparent: true, opacity: 0.45, depthWrite: false, roughness: 0.9 })
+        : material(0x9aa0a6, { roughness: 0.45, metalness: 0.15 });
+      const mesh = new THREE.Mesh(g, m);
+      mesh.renderOrder = q.kind === "foam" ? 2 : 1;
+      meshes.push(mesh);
+    }
+    if (token !== buildToken) return;
+    root.clear(); meshes.forEach(m => root.add(m));
+    statusEl.hidden = true;
+    if (refit) fit();
+    renderInfo(v, pose);
+  }
+
+  function fit() {
+    const box = new THREE.Box3().setFromObject(root);
+    const c = box.getCenter(new THREE.Vector3()), s = box.getSize(new THREE.Vector3());
+    const r = Math.max(s.x, s.y, s.z);
+    controls.target.copy(c);
+    camera.position.set(c.x + r * 1.35, c.y - r * 1.75, c.z + r * 0.95);
+    camera.near = r / 100; camera.far = r * 30; camera.updateProjectionMatrix();
+  }
+
+  function fmt(x, d = 1) { return Number(x).toFixed(d); }
+  function renderInfo(v, pose) {
+    const e = v.envelope;
+    const lenTxt = e.length_ext ? `${fmt(e.length)} → ${fmt(e.length_ext)}` : fmt(e.length);
+    const dl = pose.meas_len - pose.req_len, dd = pose.meas_dia - pose.req_dia;
+    const parts = v.parts.map(p => `<span><i style="background:#${(PART_COLORS[p.name] ?? 0x888888).toString(16).padStart(6, "0")}"></i>${PART_NAMES[p.name] ?? p.name} ${fmt(p.volume_cm3)} cm³</span>`).join("");
+    document.getElementById("info").innerHTML = `
+      <span class="label">${v.title.replace(/^case\d \w+: /, "")}</span>
+      <dl>
+        <dt>Outer Ø (max)</dt><dd>${fmt(e.od)} mm</dd>
+        <dt>Length</dt><dd>${lenTxt} mm</dd>
+        <dt>Inside, required</dt><dd>${fmt(pose.req_len)} × Ø${fmt(pose.req_dia)}</dd>
+        <dt>Inside, measured</dt><dd>${fmt(pose.meas_len, 2)} × Ø${fmt(pose.meas_dia, 2)}</dd>
+        <dt>Margin</dt><dd class="pass">+${fmt(dl, 2)} / +${fmt(dd, 2)}</dd>
+        <dt>Min wall / cap</dt><dd>${fmt(data.params.wall)} / ${fmt(data.params.end_cap)} mm</dd>
+      </dl>
+      <div class="swatches">${parts}<span><i style="background:#f2d16b"></i>Foam</span><span><i style="background:#9aa0a6"></i>Lens + caps</span></div>`;
+  }
+
+  function seg(el, entries, current, onPick) {
+    el.innerHTML = "";
+    entries.forEach(([val, text]) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.textContent = text; b.setAttribute("aria-pressed", String(val === current));
+      b.addEventListener("click", () => onPick(val));
+      el.appendChild(b);
+    });
+  }
+  function renderControls() {
+    const has = s => data.variants.some(v => v.case === state.case && v.style === s);
+    if (!has(state.style)) state.style = state.style.startsWith("tpu") ? "tpu" : "bayonet";
+    seg(document.getElementById("case-seg"), Object.entries(CASES), state.case, v => { state.case = v; state.pose = 0; renderControls(); build(true); });
+    seg(document.getElementById("style-seg"), Object.entries(STYLES).filter(([s]) => has(s)), state.style, v => { state.style = v; renderControls(); build(false); });
+    const v = variant();
+    document.getElementById("pose-group").hidden = v.poses.length < 2;
+    seg(document.getElementById("pose-seg"), v.poses.map((p, i) => [i, p.name.replace(/^\d: /, "")]), state.pose,
+        i => { state.pose = i; renderControls(); build(true); });
+  }
+  [["t-section", "section"], ["t-explode", "explode"], ["t-lens", "lens"], ["t-foam", "foam"]].forEach(([id, k]) => {
+    const el = document.getElementById(id);
+    el.checked = state[k];
+    el.addEventListener("change", () => { state[k] = el.checked; build(k === "explode"); });
+  });
+
+  function resize() {
+    const w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setSize(w, h, false); camera.aspect = w / Math.max(h, 1); camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(stage);
+  (function loop() { controls.update(); renderer.render(scene, camera); requestAnimationFrame(loop); })();
+
+  fetch("models.json").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(d => {
+    data = d; renderControls(); resize(); build(true);
+  }).catch(err => { statusEl.textContent = "Could not load the models (" + err.message + "). Reload to try again."; });
+})();
+</script>

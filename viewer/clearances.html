@@ -1,0 +1,99 @@
+<title>Lens Case Clearances</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an inspection sheet - summary table first, then four magnified joint sections. */
+:root {
+  --bg: #eef0f2;
+  --panel: #f8f9fa;
+  --fg: #1b2026;
+  --muted: #5d6670;
+  --line: #d3d8de;
+  --gap: #c0262d;
+  --ok: #2e7d4f;
+  --font-ui: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14181d; --panel: #1b2027; --fg: #e4e8ec; --muted: #98a2ad; --line: #2c333c;
+    --gap: #ff7b7b; --ok: #6cc394; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14181d; --panel: #1b2027; --fg: #e4e8ec; --muted: #98a2ad; --line: #2c333c;
+  --gap: #ff7b7b; --ok: #6cc394; color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--font-ui); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 48px;
+}
+main { max-width: 1120px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+h1 { font-size: 26px; font-weight: 600; margin: 0; letter-spacing: -0.015em; text-wrap: balance; }
+h2 { font-size: 17px; font-weight: 600; margin: 0 0 10px; text-wrap: balance; }
+.lede { color: var(--muted); max-width: 68ch; margin: 6px 0 0; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); font-weight: 500; }
+tr:last-child td { border-bottom: 0; }
+td.num { font-family: var(--font-data); font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.meas { color: var(--gap); font-weight: 500; }
+.pill { display: inline-block; font-size: 12px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.pill.ok { color: var(--ok); border-color: currentColor; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+figure { margin: 0; background: #ffffff; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+figure img { display: block; width: 100%; height: auto; }
+figcaption { padding: 10px 12px; font-size: 13px; color: #3a434d; background: #f8f9fa; border-top: 1px solid #d3d8de; }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.note { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; }
+.note p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+.note strong { font-weight: 600; }
+code { font-family: var(--font-data); font-size: 13px; }
+@media (max-width: 720px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+</style>
+
+<main>
+  <header>
+    <h1>Lens Case Clearances</h1>
+    <p class="lede">The gap between every pair of mating printed parts, cut through the real exported meshes and magnified. Red arrows are measured distances in mm. All are at least 0.3 mm square to the surfaces; the verifier fails any build below that.</p>
+  </header>
+
+  <section>
+    <h2>Every mating interface</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Interface</th><th>Set in <code>params.py</code></th><th>Gap square to surface</th><th>Measured</th><th>Feel on a tuned PETG printer</th></tr></thead>
+        <tbody>
+          <tr><td>Lid over body, top tube inside body (bayonet)</td><td class="num">SLIDE_CLEAR 0.40 radial</td><td class="num">0.40</td><td class="num meas">0.40</td><td><span class="pill ok">easy slide</span></td></tr>
+          <tr><td>Bayonet pin to slot, 45° face</td><td class="num">PIN_AXIAL_CLEAR 0.45 axial</td><td class="num">0.32</td><td class="num meas">0.32</td><td><span class="pill ok">free twist</span></td></tr>
+          <tr><td>Bayonet pin tip to slot floor</td><td class="num">PIN_RADIAL_GAP 0.40</td><td class="num">0.40</td><td class="num meas">0.36–0.40</td><td><span class="pill ok">free</span></td></tr>
+          <tr><td>Thread flanks (45°)</td><td class="num">THREAD_FLANK_GAP 0.50 axial</td><td class="num">0.35</td><td class="num meas">0.33–0.39</td><td><span class="pill ok">smooth screw</span></td></tr>
+          <tr><td>Thread crest to root</td><td class="num">THREAD_CLEAR 0.50 radial</td><td class="num">0.50</td><td class="num meas">0.50–0.60</td><td><span class="pill ok">free</span></td></tr>
+          <tr><td>Detent bump vs pin</td><td class="num">DETENT_BUMP_H 0.60</td><td class="num">−0.20 (interference)</td><td class="num">by design</td><td><span class="pill">the click</span></td></tr>
+          <tr><td>Threaded lid ceiling on body rim; lock ring on rim</td><td class="num">–</td><td class="num">0 (contact)</td><td class="num">by design</td><td><span class="pill">seating stop</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="grid" aria-label="Magnified joint sections">
+    <figure><img src="gaps_bayonet_fixed.png" alt="Section through a bayonet pin seated in the lid's J-slot, gaps 0.32 to 0.60 mm">
+      <figcaption>A. Fixed-case bayonet. The pin hooks 1.6 mm past the lid wall; the void above it is the twist channel it travels through before the foam pushes it into the notch.</figcaption></figure>
+    <figure><img src="gaps_thread_fixed.png" alt="Section through the lid thread, flank gaps 0.34 to 0.38 mm">
+      <figcaption>B. Fixed-case thread: 6 mm pitch, 2 mm deep, 45° flanks, 1.5 turns. Ridges overlap 1.5 mm radially.</figcaption></figure>
+    <figure><img src="gaps_bayonet_tele.png" alt="Section through the telescoping J-track at position 2, gaps 0.32 to 0.40 mm">
+      <figcaption>C. Telescoping bayonet at position 2: the top tube slides on 0.4 mm and its pin sits in the notch for that length.</figcaption></figure>
+    <figure><img src="gaps_thread_tele.png" alt="Section through the telescoping thread and lock ring, gaps 0.33 to 0.60 mm">
+      <figcaption>D. Telescoping thread with the lock ring sitting on the body rim. A 2-start 12 mm lead means about 4 turns between positions.</figcaption></figure>
+  </section>
+
+  <section class="notes">
+    <div class="note"><strong>If it prints tight</strong><p>Raise <code>SLIDE_CLEAR</code>, <code>THREAD_CLEAR</code> and <code>THREAD_FLANK_GAP</code> by 0.05–0.1 and rebuild; every gap follows. Print one lid and a short body ring first to test.</p></div>
+    <div class="note"><strong>If it rattles</strong><p>Lower them in the same steps. The foam takes up axial play, so only radial looseness is felt.</p></div>
+    <div class="note"><strong>Why "square to the surface"</strong><p>On a 45° face, a gap measured along the axis is only 0.71 of that square to the face. The thread and pin gaps are set larger along the axis so the true gap stays above 0.3 mm.</p></div>
+  </section>
+</main>
